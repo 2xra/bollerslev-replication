@@ -4,19 +4,32 @@ import os
 
 # Function to calculate returns
 def calculate_returns(df):
-    df = df[df['EX'] != 'WEDN']
-    # Create a mid-price column (average of BID and OFR)
-    df['MID'] = (df['BID'] + df['OFR']) / 2
+    print("removing")
+    df = df[df['MMID'] != 'WEDN']
+    df = df[df['MMID'] != 'WEDO']
+    df = df[df['MMID'] != 'SIZE']
+    df = df[df['MMID'] != 'BRUT']
+    df = df[df['MMID'] != 'BTRD']
+    df = df[df['MMID'] != 'MADF']
+    df = df[df['MMID'] != 'TRIM']
+    df = df[df['MMID'] != 'AUTO']
+    df = df[df['BID'] != 0]
+    df = df[df['OFR'] != 0]
+    df = df[df['BID'] != df['OFR']]
     
+    # Create a mid-price column (average of BID and OFR)
+    print("mid")
+    df['MID'] = (df['BID'] + df['OFR']) / 2
+    print("dt")
     # Convert DATE and TIME into a single datetime column
     df['DATETIME'] = pd.to_datetime(df['DATE'] + ' ' + df['TIME'])
-    
+    print("sort")
     # Sort by date and time
     df = df.sort_values(by='DATETIME')
     
     # Set datetime as index for easy resampling
     df.set_index('DATETIME', inplace=True)
-    
+    print("return")
     # Calculate return for each 5-minute interval
     df_resampled = df['MID'].resample('5T').last()  # Get the last mid-price in each 5-minute interval
     df_resampled = df_resampled.ffill().pct_change()  # Forward fill missing data, then calculate percentage change
@@ -24,7 +37,7 @@ def calculate_returns(df):
     # Calculate overnight return
     daily_mid = df['MID'].resample('D').last().ffill()  # Forward fill and get last price of each day
     overnight_return = daily_mid.pct_change()  # Calculate overnight return
-    
+    print("overnight")
     # Merge 5-minute and overnight returns into one DataFrame
     returns_df = pd.DataFrame({
         '5_min_return': df_resampled,
