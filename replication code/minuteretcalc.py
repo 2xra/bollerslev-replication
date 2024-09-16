@@ -80,7 +80,7 @@ def process_csv(filepath):
 
 
 # Example usage
-folder_path = r'C:\Users\Owner\Desktop\typ\jefferson\bollerslev-replication\minutereturnsspy\\'
+folder_path = r'C:\Users\rra3\Desktop\Fall 24\bollerslev-replication\minutereturnsspy'
 
 x=1
 # Iterate through all files in the folder
@@ -88,7 +88,7 @@ for filename in os.listdir(folder_path):
     print(x)
     file_path = os.path.join(folder_path, filename)
     combined_returns = process_csv(file_path)
-    combined_returns.to_csv(rf"C:\Users\Owner\Desktop\typ\jefferson\bollerslev-replication\temporaryfiles\spyreturns{x}.csv")
+    combined_returns.to_csv(rf"C:\Users\rra3\Desktop\Fall 24\bollerslev-replication\minutereturnsspy.csv")
     x =x+1
     
 
