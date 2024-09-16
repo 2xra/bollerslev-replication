@@ -21,7 +21,7 @@ def calculate_returns(df):
     (~df['MMID'].isin(exclude_list)) &
     (df['OFR'] > 2) &
     (df['BID'] > 2) &
-    (df['OFR'] < 299) &
+    (df['OFR'] < 249) &
     (df['BID'] != df['OFR']) &
     (df['BID'] - df['OFR'] <= 10)
     )
