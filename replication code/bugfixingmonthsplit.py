@@ -15,7 +15,7 @@ def split_csv_by_month(input_csv):
     # Group by 'yearmonth' and save each group as a new CSV file
     for yearmonth, group in df.groupby('yearmonth'):
        
-       group.to_csv(rf'C:\Users\Owner\Desktop\typ\jefferson\bollerslev-replication\minutereturnsspy\{yearmonth}.csv', index=False)
+       group.to_csv(rf'C:\Users\Owner\Desktop\typ\jefferson\bollerslev-replication\minutereturnsspy\months07\{yearmonth}.csv', index=False)
 
 # Example usage
 input_csv = r'C:\Users\Owner\Desktop\typ\jefferson\bollerslev-replication\minutereturnsspy\qvwkoqore2ufgf9o.csv'  # replace with your actual CSV file path

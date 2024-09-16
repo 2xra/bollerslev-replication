@@ -5,18 +5,27 @@ import os
 # Function to calculate returns
 def calculate_returns(df):
     print("removing")
-    df = df[df['MMID'] != 'WEDN']
-    df = df[df['MMID'] != 'WEDO']
-    df = df[df['MMID'] != 'SIZE']
-    df = df[df['MMID'] != 'BRUT']
-    df = df[df['MMID'] != 'BTRD']
-    df = df[df['MMID'] != 'MADF']
-    df = df[df['MMID'] != 'TRIM']
-    df = df[df['MMID'] != 'AUTO']
-    df = df[df['BID'] != 0]
-    df = df[df['OFR'] != 0]
-    df = df[df['BID'] != df['OFR']]
+    exclude_list = ['WEDN', 'WEDO', 'SIZE', 'BRUT', 'BTRD', 'MADF', 'TRIM', 'AUTO', 'NAQS', 'EDGX', 'EDGA', 'FLOW','TMBR']
+    """df = df[df['BID'] != 0]
+    df = df[~df['MMID'].isin(exclude_list)]
     
+    df = df[df['OFR'] > 2]
+    df = df[df['BID'] > 2]
+    df = df[df['OFR'] < 299]
+    df = df[df['BID'] != df['OFR']]
+    df = df[df['BID'] - df['OFR'] <= 10]"""
+    
+    # Create a boolean mask for all the conditions
+    mask = (
+    (df['BID'] != 0) &
+    (~df['MMID'].isin(exclude_list)) &
+    (df['OFR'] > 2) &
+    (df['BID'] > 2) &
+    (df['OFR'] < 299) &
+    (df['BID'] != df['OFR']) &
+    (df['BID'] - df['OFR'] <= 10)
+    )
+    df = df[mask]
     # Create a mid-price column (average of BID and OFR)
     print("mid")
     df['MID'] = (df['BID'] + df['OFR']) / 2
@@ -45,15 +54,6 @@ def calculate_returns(df):
         'is_overnight': False  # Initialize all as False
     })
     
-    # Assign overnight returns to the first available time point of each day
-    for date, return_val in overnight_return.items():
-        # Filter the DataFrame for the current date
-        filtered_df = returns_df[returns_df.index.date == date]
-        if not filtered_df.empty:
-            # The first available time point in the 5-minute resampled data for the day
-            first_time_point = filtered_df.index[0]
-            returns_df.at[first_time_point, 'overnight_return'] = return_val
-            returns_df.at[first_time_point, 'is_overnight'] = True  # Mark as True for overnight return
     
     # Drop rows where both returns are NaN
     returns_df.dropna(how='all', inplace=True)

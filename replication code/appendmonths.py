@@ -31,7 +31,7 @@ for filename in os.listdir(folder_path):
                          (df['DATETIME'].dt.time <= pd.to_datetime(end_time).time())]
         
         # Calculate the monthly volatility of the 5_min_return column
-        monthly_volatility = df_filtered.groupby(df_filtered['DATETIME'].dt.to_period('M'))['5_min_return'].std()
+        monthly_volatility = df_filtered.groupby(df_filtered['DATETIME'].dt.to_period('M'))['5_min_return'].var()
         
         # Convert the Series to a DataFrame and reset index
         monthly_volatility_df = monthly_volatility.reset_index()
