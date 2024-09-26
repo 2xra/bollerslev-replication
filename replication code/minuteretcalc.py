@@ -5,8 +5,8 @@ import os
 # Function to calculate returns
 def calculate_returns(df):
     print("removing")
-    exclude_list = ['WEDN', 'WEDO', 'SIZE', 'BRUT', 'BTRD', 'MADF', 'TRIM', 'AUTO', 'NAQS', 'EDGX', 'EDGA', 'FLOW','TMBR']
-    """df = df[df['BID'] != 0]
+    exclude_list = ['WEDN', 'WEDO', 'SIZE', 'BRUT', 'BTRD', 'MADF', 'TRIM', 'AUTO', 'NAQS', 'EDGX', 'EDGA', 'FLOW','TMBR', 'ARCA', "CAES", "JBOC", "PTRS"]
+    """df = df[df['BID'] != 0]JN
     df = df[~df['MMID'].isin(exclude_list)]
     
     df = df[df['OFR'] > 2]
@@ -23,7 +23,7 @@ def calculate_returns(df):
     (df['BID'] > 2) &
     (df['OFR'] < 249) &
     (df['BID'] != df['OFR']) &
-    (df['BID'] - df['OFR'] <= 10)
+    (df['BID'] - df['OFR'] <= 1.2)
     )
     df = df[mask]
     # Create a mid-price column (average of BID and OFR)
